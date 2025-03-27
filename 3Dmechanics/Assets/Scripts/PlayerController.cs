@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float speed = 3f;
+    [SerializeField] private float speed = 5f;
+    [SerializeField, Range(5, 1)] private float rotRightSpeed = 1f;
+    [SerializeField, Range(-5, -1)] private float rotLeftSpeed = -1f;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] KeyCode jumpCode = KeyCode.Space;
     private Rigidbody rb;
     private bool isGrounded = true;
 
@@ -21,26 +24,24 @@ public class PlayerController : MonoBehaviour
 
     private void Controller()
     {
-        if (Input.GetKeyDown(KeyCode.Space) & isGrounded)
+        float moveVertical = Input.GetAxis("Vertical");
+        Vector3 movement = new Vector3(0, 0, moveVertical);
+        transform.Translate(movement * speed * Time.deltaTime);
+
+        if (Input.GetKeyDown(jumpCode) & isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
-        if (Input.GetKey(KeyCode.W))
-        {
-
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-
-        }
         if (Input.GetKey(KeyCode.A))
         {
-
+            Vector3 rotate = new Vector3(0, rotLeftSpeed, 0);
+            transform.Rotate(rotate);
         }
         if (Input.GetKey(KeyCode.D))
         {
-
+            Vector3 rotate = new Vector3(0, rotRightSpeed, 0);
+            transform.Rotate(rotate);
         }
         
     }
