@@ -4,12 +4,16 @@ using UnityEngine;
 public class NewBehaviourScript : MonoBehaviour
 {
     [SerializeField] private List<GameObject> allObjects;
+    [SerializeField] private LayerMask _layerMask;
 
     private void OnCollisionEnter(Collision collision)
     {
-        for (int i = 0; i < allObjects.Count; ++i)
+        if (LayerMaskUtil.ContainsLayer(_layerMask, collision.gameObject.layer))
         {
-            allObjects[i].GetComponent<Collider>().enabled = false;
+            for (int i = 0; i < allObjects.Count; ++i)
+            {
+                allObjects[i].GetComponent<Collider>().enabled = false;
+            }
         }
     }
 }
